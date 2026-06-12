@@ -82,11 +82,11 @@ Create a `.env.local` file in the project root:
 # Required — API key for your LLM provider
 LLM_API_KEY=your-api-key-here
 
+# Required — model identifier for your LLM provider
+LLM_MODEL_NAME=your-model-name
+
 # Optional — custom base URL (defaults to https://api.openai.com/v1)
 LLM_BASE_URL=https://your-provider.example.com/v1
-
-# Optional — model identifier (defaults to redacted-model)
-LLM_MODEL_NAME=your-model-name
 ```
 
 ### Run

@@ -111,7 +111,11 @@ describe("analyzeCode", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env = { ...originalEnv, LLM_API_KEY: "test-key" };
+    process.env = {
+      ...originalEnv,
+      LLM_API_KEY: "test-key",
+      LLM_MODEL_NAME: "test-model",
+    };
   });
 
   afterEach(() => {
@@ -131,7 +135,7 @@ describe("analyzeCode", () => {
       expect(mockCreate).toHaveBeenCalledOnce();
       // Verify the API was called with correct structure
       const callArgs = mockCreate.mock.calls[0][0];
-      expect(callArgs.model).toBe("redacted-model");
+      expect(callArgs.model).toBe("test-model");
       expect(callArgs.messages).toHaveLength(2);
       expect(callArgs.messages[0].role).toBe("system");
       expect(callArgs.messages[1].role).toBe("user");
@@ -149,6 +153,15 @@ describe("analyzeCode", () => {
 
       const callArgs = mockCreate.mock.calls[0][0];
       expect(callArgs.model).toBe("custom-model");
+    });
+
+    it("throws a descriptive error when LLM_MODEL_NAME is not set", async () => {
+      delete process.env.LLM_MODEL_NAME;
+
+      await expect(analyzeCode(SAMPLE_CODE, "typescript")).rejects.toThrow(
+        /LLM_MODEL_NAME environment variable is not set/,
+      );
+      expect(mockCreate).not.toHaveBeenCalled();
     });
   });
 

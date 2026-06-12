@@ -11,10 +11,10 @@ import { AnalyzeResultSchema, type AnalyzeResult } from "./schemas";
  *
  * Required env vars:
  *   - LLM_API_KEY        — API key for the LLM provider
+ *   - LLM_MODEL_NAME     — Model identifier
  *
  * Optional env vars:
  *   - LLM_BASE_URL       — Custom base URL (defaults to OpenAI)
- *   - LLM_MODEL_NAME     — Model identifier (defaults to "redacted-model")
  */
 const client = new OpenAI({
   apiKey: process.env.LLM_API_KEY,
@@ -56,11 +56,18 @@ export async function analyzeCode(
   code: string,
   language: string,
 ): Promise<AnalyzeResult> {
+  const model = process.env.LLM_MODEL_NAME;
+  if (!model) {
+    throw new Error(
+      "LLM_MODEL_NAME environment variable is not set. Please check the server configuration.",
+    );
+  }
+
   // --- Call the LLM ---
   let response: OpenAI.Chat.Completions.ChatCompletion;
   try {
     response = await client.chat.completions.create({
-      model: process.env.LLM_MODEL_NAME ?? "redacted-model",
+      model,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         {
