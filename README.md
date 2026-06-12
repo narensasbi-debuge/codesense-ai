@@ -4,6 +4,8 @@ An AI-powered code analysis tool that takes any code snippet and instantly gener
 
 ![CI](https://github.com/narensasbi-debuge/codesense-ai/actions/workflows/ci.yml/badge.svg)
 
+**🌐 Live Demo: [codesense-ai-pi.vercel.app](https://codesense-ai-pi.vercel.app/)**
+
 ## ✨ Features
 
 - **AI Code Analysis** — Paste any code snippet and get three deliverables in one click:
