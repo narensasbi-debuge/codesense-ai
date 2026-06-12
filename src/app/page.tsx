@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Loader2, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, AlertCircle, Sparkles, Eraser } from "lucide-react";
 import CodeEditor from "@/components/CodeEditor";
 import ResultsViewer from "@/components/ResultsViewer";
 import type { AnalyzeResult } from "@/lib/schemas";
@@ -80,6 +80,12 @@ export default function Home() {
     }
   }, [code, language]);
 
+  const handleClear = useCallback(() => {
+    setCode("");
+    setResult(null);
+    setError(null);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-100">
       {/* Header */}
@@ -120,6 +126,16 @@ export default function Home() {
           </div>
 
           <div className="flex-1" />
+
+          {/* Clear button */}
+          <button
+            onClick={handleClear}
+            disabled={isLoading || !code.trim()}
+            className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-2.5 text-sm font-semibold text-zinc-300 shadow-md transition-colors hover:bg-zinc-700 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Eraser className="h-4 w-4" />
+            Clear
+          </button>
 
           {/* Analyze button */}
           <button
